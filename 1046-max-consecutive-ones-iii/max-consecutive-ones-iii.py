@@ -6,23 +6,21 @@ class Solution(object):
         :rtype: int
         """
 
-        count=0
-        st=0
-        n=len(nums)
-        ans=0
+        count = 0
+        l = 0
+        ans = 0
 
-        for i in range(n):
-            if nums[i]==0:
-                count+=1
-                if count>k:
-                    ans=max(ans,i-st)
-                    while count>k:
-                        if nums[st]==0:
-                            count-=1
-                        st+=1
+        for i in range(len(nums)):
+            if nums[i] == 0:
+                count += 1
+
+                while count > k:
+                    if nums[l] == 0:
+                        count -= 1
+                    l += 1
+            
+            ans = max(ans, i - l + 1)
         
-        if count<=k:
-            ans=max(ans,n-st)
         return ans
 
 
