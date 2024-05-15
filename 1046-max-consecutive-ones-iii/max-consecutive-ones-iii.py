@@ -6,20 +6,23 @@ class Solution(object):
         :rtype: int
         """
 
-        l = 0
-        ans = 0
-        index = []
+        count=0
+        st=0
+        n=len(nums)
+        ans=0
 
-        for i in range(len(nums)):
-            if nums[i] == 0:
-                index.append(i)
-                if k == 0 or len(index) == k + 1:
-                    l = index[0] + 1
-                    index.pop(0)
-                
-            
-            ans = max(ans, i - l + 1)
+        for i in range(n):
+            if nums[i]==0:
+                count+=1
+                if count>k:
+                    ans=max(ans,i-st)
+                    while count>k:
+                        if nums[st]==0:
+                            count-=1
+                        st+=1
         
+        if count<=k:
+            ans=max(ans,n-st)
         return ans
 
 
