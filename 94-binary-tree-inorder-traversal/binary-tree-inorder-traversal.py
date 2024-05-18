@@ -10,28 +10,25 @@ class Solution(object):
         :type root: TreeNode
         :rtype: List[int]
         """
-        cur = root
+        stack = []
         ans = []
+        ptr = root
 
-        while cur != None:
-            if cur.left == None:
-                ans.append(cur.val)
-                cur = cur.right
+        while True:
+            while ptr != None:
+                stack.append(ptr)
+                ptr = ptr.left
             
+            if len(stack) != 0:
+                ptr = stack[-1]
+                stack.pop(-1)
+                ans.append(ptr.val)
+                ptr = ptr.right
             else:
-                ptr = cur.left
-                while ptr.right != None and ptr.right != cur:
-                    ptr = ptr.right
-                
-                if ptr.right == None:
-                    ptr.right = cur
-                    cur = cur.left
-                if ptr.right == cur:
-                    ans.append(cur.val)
-                    ptr.right = None
-                    cur = cur.right
-        
+                break
+            
         return ans
+
 
 
         
