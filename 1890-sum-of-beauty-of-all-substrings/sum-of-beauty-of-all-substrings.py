@@ -18,16 +18,31 @@ class Solution(object):
         ans = 0
         n = len(s)
         for i in range(n):
-            count = {}
+            freqcount = {}
+            alphacount = {}
+            mini = 0
+            maxi = 1
+            freqcount[1] = 0
             for j in range(i, n):
                 c = s[j]
-                if c not in count:
-                    count[c] = 1
+                if c not in alphacount:
+                    freqcount[1] += 1
+                    alphacount[c] = 1
+                    mini = 1
                 else:
-                    count[c] += 1
-                
-                ans += check(count)
-        
+                    freqcount[alphacount[c]] -= 1
+                    if freqcount[alphacount[c]] == 0 and alphacount[c] == mini:
+                        mini += 1
+
+                    alphacount[c] += 1
+                    if alphacount[c] not in freqcount:
+                        freqcount[alphacount[c]] = 1
+                    else:
+                        freqcount[alphacount[c]] += 1
+                    maxi = max(alphacount[c], maxi)
+
+                ans += maxi - mini
+                   
         return ans
 
 
