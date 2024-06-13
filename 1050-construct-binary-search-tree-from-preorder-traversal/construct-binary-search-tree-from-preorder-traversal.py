@@ -10,25 +10,23 @@ class Solution(object):
         :type preorder: List[int]
         :rtype: TreeNode
         """
+
+        def check(ind, l, h):
+            if ind[0] == len(preorder):
+                return None
+            
+            root = TreeNode(preorder[ind[0]])
+            ind[0] += 1
+
+            if ind[0] < len(preorder) and l < preorder[ind[0]] < root.val:
+                root.left = check(ind, l, root.val)
+            
+            if ind[0] < len(preorder) and root.val < preorder[ind[0]] < h:
+                root.right = check(ind, root.val, h)
+            
+            return root
+
+
+        ind = [0]
+        return check(ind, -(10 ** 10), (10 ** 10))
         
-        stack = []
-        root = None
-
-        for i in range(len(preorder)):
-            node = TreeNode(preorder[i])
-            if root == None: root = node
-            
-            temp = None
-            while stack and stack[-1].val < node.val:
-                temp = stack[-1]
-                stack.pop(-1)
-            
-            if stack and temp == None:
-                temp = stack[-1]
-                temp.left = node
-            elif temp != None:
-                temp.right = node
-            stack.append(node)
-  
-
-        return root
