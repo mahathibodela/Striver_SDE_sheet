@@ -4,22 +4,17 @@ class Solution(object):
         :type nums: List[int]
         :rtype: List[int]
         """
-
-        n = len(nums)
-        nge = [-1 for i in range(n)]
-        stack = []
-        l = 2 * n
-
-        for i in range(l):
-            no = nums[i % n]
-
-            while len(stack) != 0 and nums[stack[-1]] < no:
-                j = stack[-1]
-                nge[j] = nums[i % n]
-                stack.pop(-1)
-
-            stack.append(i % n)
-
-        return nge
-
         
+        stack = []
+        n = len(nums)
+        ans = [-1 for i in range(n)]
+
+        for i in range(2* n):
+            ind = i % n
+
+            while stack and nums[stack[-1]] < nums[ind]:
+                j = stack.pop(-1)
+                if ans[j] == -1: ans[j] = nums[ind]
+            stack.append(ind)
+
+        return ans
