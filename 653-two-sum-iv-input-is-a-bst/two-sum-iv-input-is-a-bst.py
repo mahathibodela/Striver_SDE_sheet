@@ -11,46 +11,39 @@ class Solution(object):
         :type k: int
         :rtype: bool
         """
-        incStack = []
-        decStack = []
-
+        left = []
+        right = []
         ptr = root
         while ptr != None:
-            incStack.append(ptr)
+            left.append(ptr)
             ptr = ptr.left
-        
         ptr = root
         while ptr != None:
-            decStack.append(ptr)
+            right.append(ptr)
             ptr = ptr.right
         
-        inc = incStack[-1]
-        dec = decStack[-1]
+        while left and right and left[-1].val < right[-1].val:
+            a = left[-1].val
+            b = right[-1].val
 
-        while inc.val < dec.val:
-
-            if inc.val + dec.val < k:
-                incStack.pop(-1)
-                ptr = inc.right
-                while ptr != None:
-                    incStack.append(ptr)
-                    ptr = ptr.left
-                
-                inc = incStack[-1]
-            
-            elif inc.val + dec.val > k:
-                decStack.pop(-1)
-                ptr = dec.left
-                while ptr != None:
-                    decStack.append(ptr)
-                    ptr = ptr.right
-                
-                dec = decStack[-1]
-            
-            else:
+            if a + b == k:
                 return True
+            if a + b > k:
+                ptr = right.pop(-1)
+                if ptr.left != None:
+                    ptr = ptr.left
+                    while ptr != None:
+                        right.append(ptr)
+                        ptr = ptr.right
+            else:
+                ptr = left.pop(-1)
+                if ptr.right != None:
+                    ptr = ptr.right
+                    while ptr != None:
+                        left.append(ptr)
+                        ptr = ptr.left
         
         return False
 
-            
+
         
