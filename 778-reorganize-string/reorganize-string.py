@@ -4,32 +4,34 @@ class Solution(object):
         :type s: str
         :rtype: str
         """
+
         count = {}
         for c in s:
             if c in count:
-                count[c] += 1 
+                count[c] += 1
             else:
                 count[c] = 1
         
         heap = []
-        for a, b in count.items():
-            heap.append((-b, a))
-        heapq.heapify(heap)
-
+        for key, item in count.items():
+            heapq.heappush(heap, (-item, key))
+        
         ans = ""
-        pre = []
+        prec, prevFreq = "", 0
+        while len(ans) < len(s):
+            if not heap:
+                return ""
+
+            curF, curc = heapq.heappop(heap)
+            ans += str(curc)
+            
+            if prevFreq != 0:
+                heapq.heappush(heap, (prevFreq, prevc))
+                prevFreq = 0
+
+            if curF != -1:
+                prevFreq = curF + 1
+                prevc = curc
         
-        while heap:
-            c, a = heapq.heappop(heap)
-            ans += a
-            if len(pre) != 0:
-                heapq.heappush(heap, (pre[0], pre[1]))
-                pre = []
-            if c + 1 != 0:
-                pre = [c + 1, a]
-        
-        if len(ans) == len(s):
-            return ans
-        return ""
-                
-        
+        return ans
+
