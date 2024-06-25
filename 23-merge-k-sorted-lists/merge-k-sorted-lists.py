@@ -9,27 +9,22 @@ class Solution(object):
         :type lists: List[ListNode]
         :rtype: ListNode
         """
-        heap = []
-        heapq.heapify(heap)
+        q = []
         ans = ListNode(-1)
-        temp = ans
-        ptr = None
+        ptr = ans
 
         for node in lists:
-            if node != None:
-                heapq.heappush(heap, (node.val, node))
+            if node == None: continue
+            heapq.heappush(q, [node.val, node])
         
-        while len(heap) != 0:
-            _, ptr = heapq.heappop(heap)
-            ans.next = ptr
-            ans = ans.next
-
-            if ptr.next != None:
-                heapq.heappush(heap, (ptr.next.val, ptr.next))
+        while q:
+            _, node = heapq.heappop(q)
+            ptr.next = node
+            ptr = ptr.next
             
+            if node.next != None:
+                node = node.next
+                heapq.heappush(q, [node.val, node])
         
-        return temp.next
-
-
-
+        return ans.next
         
