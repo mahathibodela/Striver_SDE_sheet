@@ -4,46 +4,43 @@ class Solution(object):
         :type s: str
         :rtype: int
         """
-        maxPos = str(2**31 - 1)
-        minPos = str((2**31))
-        print("5" > "332")
-
-        #trim down all leading white spaces
-        for i in range(len(s)):
-            if s[i] != " ":
-                s = s[i:]
-                break
         
-        #checking the string
-        ans = ""
-        for i in range(len(s)):
-            if i == 0:
-                if s[i] == '+':
-                    continue
-                elif s[i] == '-':
-                    ans += s[i]
-                    continue
+
+        no = ""
+        s = s.lstrip()
+        sign = True
+        i = 0
+        print(s)
+        if len(s) == 0:
+            return 0
+        if s[0] == '-':
+            i += 1
+            sign = False
+        elif s[0] == '+':
+            i += 1
+        
+        maxi = str(2 ** 31 - 1)
+        mini = str(2 ** 31)
+        n = len(s)
+        while i < n:
+            if not (ord('0') <= ord(s[i]) <= ord('9')):
+                break
+            if len(no) == 0 and s[i] == '0':
+                i += 1
+                continue
+            no = no + s[i]
+            if sign and ((len(no) == len(maxi) and no >= maxi) or len(no) > len(maxi)):
+                return 2 ** 31 - 1
+            if not sign and ((len(no) == len(mini) and no >= mini) or len(no) > len(mini)):
+                return -(2 ** 31)
+            i += 1
+        
+        ans = 0
+        for c in no:
+            ind = ord(c) - ord('0')
+            ans = ans * 10 + ind
+        
+        return ans if sign else -ans
+
+        
             
-            if '0' <= s[i] and s[i] <= '9':
-                if((ans == "" or ans =="-" or ans =='+') and s[i] == '0'):
-                    continue
-
-                ans += s[i]
-                if ans[0] == '-' and (((len(ans[1:]) == len(minPos)) and ans[1:] >= minPos) or (len(ans[1:]) > len(minPos))):
-                    return -(2 ** 31)
-                elif ans[0] != '-' and ((len(ans) == len(maxPos) and ans >= maxPos) or (len(ans) > len(maxPos))):
-                    return (2 ** 31) - 1
-                
-            else:
-                break
-        
-
-        if ans == "" or ans == '-':   return 0
-        if ans[0] == '-':
-            return -(int(ans[1:]))
-        return int(ans)
-
-
-        
-        
-        
