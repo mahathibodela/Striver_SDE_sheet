@@ -5,33 +5,26 @@ class Solution(object):
         :type target: int
         :rtype: List[List[int]]
         """
-
-        def find(i, ans, subans, tot):
-            if tot == target:
-                temp = [k for k in subans]
+        
+        def check(i, tar, subans, ans):
+            if tar == 0:
+                temp = [i for i in subans]
                 ans.append(temp)
-                print(ans)
-                return 
-            if tot > target :
                 return
+            if i == n:
+                return 
             
-            #pick 
-            for j in range(i, len(candidates)):
-                if j == i or candidates[j - 1] != candidates[j]:
-                    if tot + candidates[j] <= target:
-                        subans.append(candidates[j])
-                        tot += candidates[j]
-                        find(j + 1, ans, subans, tot)
-                        tot -= candidates[j]
-                        subans.pop(-1)
-                    else:
-                        return
-            
-            return
-
-                
+            for j in range(i, n):
+                if j != i and candidates[j] == candidates[j - 1]: continue
+                if candidates[j] <= tar:
+                    subans.append(candidates[j])
+                    check(j + 1, tar - candidates[j], subans, ans)
+                    subans.pop(-1)
+                else:
+                    return
         
         candidates.sort()
+        n = len(candidates)
         ans = []
-        find(0, ans, [], 0)
+        check(0, target, [], ans)
         return ans
