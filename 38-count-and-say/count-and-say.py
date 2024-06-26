@@ -4,27 +4,28 @@ class Solution(object):
         :type n: int
         :rtype: str
         """
-        
-        if n == 1:
-            return "1"
 
-        def check(no, s):
-            if no == n:
-                return s
+        def check(no):
+            if no == 1:
+                return "1"
             
-            c = 1
-            ch = s[0]
+            num = check(no - 1)
             ans = ""
-            for i in range(1, len(s)):
-                if ch == s[i]:
-                    c += 1
-                else:
-                    ans += str(c) + ch
-                    c = 1 
-                    ch = s[i]
-            
-            ans += str(c) + ch         
-            return check(no + 1, ans)
+            l = 0 
+            r = 1
+            # print(no, num)
+            while r < len(num):
+                if num[r] == num[r - 1]:
+                    r += 1
+                    continue
+                ans += str((r - l)) + num[l]
+                l = r
+                r += 1
+                
+            ans += str((r - l)) + num[l]
+            print(no, num, ans)
+            return ans
 
-        return check(1, "1")
+        k = check(n)
+        return k
         
