@@ -5,28 +5,24 @@ class Solution(object):
         :type target: int
         :rtype: int
         """
-        l = 0
-        h = len(nums) - 1
-        nums.sort()
-        if nums[h] < target :
-            return h + 1
-        if target < nums[0]:
-            return 0
+        def ceil():
+            l = 0
+            h = n - 1
 
-        while(l <= h):
-            mid = (l + h) / 2
+            while l <= h:
+                mid = (l + h) / 2
 
-            if(nums[mid] < target and nums[mid + 1] > target):
-                return mid + 1
-            elif(nums[mid] == target):
-                return mid
+                if nums[mid] <= target:
+                    l = mid + 1
+                else:
+                    h = mid - 1
             
-            elif(nums[mid + 1] <= target):
-                l = mid + 1
-            else:
-                h = mid - 1
+            return l
         
-        return -1
+        n = len(nums)
+        k = ceil()
+        if k >= 0 and nums[k - 1] == target:
+            return k  - 1
         
-            
-        
+        return k
+
