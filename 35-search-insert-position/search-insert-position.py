@@ -18,11 +18,28 @@ class Solution(object):
                     h = mid - 1
             
             return l
+
+        def floor():
+            l = 0
+            h = n - 1
+            ans = -1
+
+            while l <= h:
+                mid = (l + h) / 2
+
+                if nums[mid] < target:
+                    l = mid + 1
+                else:
+                    h = mid - 1
+            
+            return h + 1
+        
         
         n = len(nums)
-        k = ceil()
-        if k >= 0 and nums[k - 1] == target:
-            return k  - 1
+        return floor()
+        # k = ceil()
+        # if k >= 0 and nums[k - 1] == target:
+        #     return k  - 1
         
-        return k
+        # return k
 
