@@ -4,36 +4,34 @@ class Solution(object):
         :type heights: List[int]
         :rtype: int
         """
-        arr = heights
-        n = len(arr)
-        nums = arr
-        rightSmall = [n for i in range(n)]
+        
+        n = len(heights)
         leftSmall = [-1 for i in range(n)]
-        stack = []
+        rightSmall = [n for i in range(n)]
 
+        # leftSmall
+        stack = []
         for i in range(n):
-            no = arr[i]
-            while len(stack) != 0 and nums[stack[-1]] > no:
-                j = stack[-1]
-                rightSmall[j] = i
+            while stack and heights[stack[-1]] >= heights[i]:
                 stack.pop(-1)
+            
+            if stack:
+                leftSmall[i] = stack[-1]
             stack.append(i)
         
+        #rightSmall
         stack = []
-        for i in range(n -1, -1, -1):
-            no = arr[i]
-            while len(stack) != 0 and nums[stack[-1]] > no:
-                j = stack[-1]
-                leftSmall[j] = i
+        for i in range(n - 1, -1, -1):
+            while stack and heights[stack[-1]] >= heights[i]:
                 stack.pop(-1)
-            stack.append(i) 
+            
+            if stack:
+                rightSmall[i] = stack[-1]
+            stack.append(i)
         
-        # print(leftS)
         ans = 0
         for i in range(n):
-            l = leftSmall[i] + 1
-            r = rightSmall[i] - 1
-            ans = max(ans, (r - l + 1) * nums[i])
+            ans = max(ans, heights[i] * (rightSmall[i] - leftSmall[i] - 1))
         
         return ans
-        
+            
