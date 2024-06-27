@@ -4,32 +4,46 @@ class Solution(object):
         :type matrix: List[List[int]]
         :rtype: List[int]
         """
+        
         n = len(matrix)
         m = len(matrix[0])
-        left = top = 0
-        right = m - 1
-        bottom = n - 1
         ans = []
 
-        while left <= right and top <= bottom:
+        l = t = 0
+        r = m - 1
+        b = n - 1
 
-            for i in range(left, right + 1):
-                ans.append(matrix[top][i])
-            top += 1
+        while l < r and t < b:
 
-            for i in range(top, bottom + 1):
-                ans.append(matrix[i][right])
-            right -= 1
+            # topLeft to topRight
+            for i in range(0, r - l):
+                ans.append(matrix[t][l + i])
+
+            #topRight to bottomRight
+            for i in range(0, b - t):
+                ans.append(matrix[t + i][r])
             
-            if top <= bottom:
-                for i in range(right, left - 1, -1):
-                    ans.append(matrix[bottom][i])
-                bottom -= 1
+            #bottomRight to bottomLeft
+            for i in range(0, r - l):
+                ans.append(matrix[b][r - i])
             
-            if left <= right:
-                for i in range(bottom, top - 1, -1):
-                    ans.append(matrix[i][left])
-                left += 1
+            #bottomLeft to bottomTop
+            for i in range(0, b - t):
+                ans.append(matrix[b - i][l])
+            
+            l += 1
+            r -= 1
+            t += 1
+            b -= 1
+        
+        if l == r:
+            for i in range(0, b - t + 1):
+                ans.append(matrix[t + i][l])
+        if t == b and l != r:
+            for i in range(0, r - l + 1):
+                ans.append(matrix[t][l + i])
         
         return ans
+
+
 
