@@ -5,49 +5,55 @@ class Solution(object):
         :type t: str
         :rtype: str
         """
-
-        def isSame(tdict, sdict):
-            for i in tdict:
-                if i not in sdict or sdict[i] - tdict[i] < 0:
+        tmap = {}
+        for c in t:
+            if c in tmap:
+                tmap[c] += 1
+            else:
+                tmap[c] = 1
+        
+        def isSame(tmap, smap):
+            if len(tmap) != len(smap): return False
+            for key, values in tmap.items():
+                if smap[key] - values < 0:
                     return False
             
             return True
-
+        
 
         l = -1
-        tdict = {}
-        sdict = {}
+        n = len(s)
+        smap = {}
+        r = 0
         ans = 10 ** 10
-        sans = -1
-        send = -1
+        ansStart = ansEnd = -1
 
-        for i in t:
-            if i in tdict:
-                tdict[i] += 1
-            else:
-                tdict[i] = 1
-        
-        for i in range(len(s)):
-            c = s[i]
-            if c in tdict:
+        while r < n:
+            c = s[r]
+            if c in tmap:
                 if l == -1:
-                    l = i
-                
-                if c in sdict:
-                    sdict[c] += 1
+                    l = r
+                if c in smap:
+                    smap[c] += 1
                 else:
-                    sdict[c] = 1
+                    smap[c] = 1
             
-            while isSame(tdict, sdict):
-                if i - l + 1 < ans:
-                    sans = l
-                    send = i
-                    ans = i - l + 1
-                
-                z = s[l]
-                if z in tdict:
-                    sdict[s[l]] -= 1
-                l += 1
-                
+                while isSame(tmap, smap) and l <= r:
+                    if r - l + 1 < ans:
+                        ans = r - l + 1
+                        ansStart = l
+                        ansEnd = r
+
+                    if s[l] in tmap:
+                        smap[s[l]] -= 1
+                    l += 1     
+            r += 1
             
-        return s[sans : send + 1]
+        
+        if ansStart != -1:
+            return s[ansStart: ansEnd + 1]
+        return ""
+
+            
+
+        
